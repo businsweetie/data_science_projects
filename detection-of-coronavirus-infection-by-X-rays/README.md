@@ -17,7 +17,7 @@ In order to review the work of neural networks in the task of recognizing corona
 - lung opacity, 3716 images (c);
 - normal, 10192 images (d).
 
-<a name="class_img">![Classes](https://github.com/businsweetie/diplom/blob/main/pic/Dataset.png)</a>
+<a name="class_img">![Classes](https://github.com/businsweetie/data_science_projects/blob/main/detection-of-coronavirus-infection-by-X-rays/pic/Dataset.png)</a>
 
 All images have been transformed to an extension $224 \times 224$ the pixel where augmentation (mapping) was applied to the data..
 
@@ -35,7 +35,7 @@ Test        | 150   | 150       | 150          | 150    | 600
 <a name="balancing"><h2>Data Balancing</h2></a>
 The data set under consideration is [unbalanced](#balancing_img), so the WeightedRandomSampler method was used for correct training.
 
-<a name="balancing_img">![Balancing](https://github.com/businsweetie/diplom/blob/main/pic/DistrData.png)</a>
+<a name="balancing_img">![Balancing](https://github.com/businsweetie/data_science_projects/blob/main/detection-of-coronavirus-infection-by-X-rays/pic/DistrData.png)</a>
 
 To use this method, you need to:
 - get the value of the number of images in each class;
@@ -69,7 +69,7 @@ After training the model, an interval of the learning rate is selected at which 
 
 The initial learning rate intervals were chosen to be the same for all architectures: $lr_{max}=1 \times 10^{-7}$, $lr_{init}=1 \times 10^{-1}$. After training all models with the learning rate from the [initial interval](#initial_intervals_img), [optimal intervals](#optimal_intervals_table) and the best upper and lower bounds were selected for each model.
 
-<a name="initial_intervals_img">![initial interval](https://github.com/businsweetie/diplom/blob/main/pic/AllScheduler.jpg)</a>
+<a name="initial_intervals_img">![initial interval](https://github.com/businsweetie/data_science_projects/blob/main/detection-of-coronavirus-infection-by-X-rays/pic/AllScheduler.jpg)</a>
 
 <a name="optimal_intervals_table"></a>
 <table>
@@ -139,7 +139,7 @@ The initial learning rate intervals were chosen to be the same for all architect
 
 For the trained models, graphs were constructed with the accuracy metric values for each of the [models](#models_comp_img).
 
-<a name="models_comp_img">![Graphs of model comparisons](https://github.com/businsweetie/diplom/blob/main/pic/ModelsComp.png)</a>
+<a name="models_comp_img">![Graphs of model comparisons](https://github.com/businsweetie/data_science_projects/blob/main/detection-of-coronavirus-infection-by-X-rays/pic/ModelsComp.png)</a>
 
 Based on the graphs, models were identified for different architectures that achieve maximum accuracy faster. Such models are shown in italics in the [table](#optimal_intervals_table).
 
@@ -160,13 +160,13 @@ Normal       | DenseNet-121    | $9.5\times 10^{-5}$ | $0.961603$
 
 For the models that showed the best predictive ability, a [graph of the correctness value](#acc_comp_img) was constructed.
 
-<a name="acc_comp_img">![Comparison of models](https://github.com/businsweetie/diplom/blob/main/pic/AccCompCovid.png)</a>
+<a name="acc_comp_img">![Comparison of models](https://github.com/businsweetie/data_science_projects/blob/main/detection-of-coronavirus-infection-by-X-rays/pic/AccCompCovid.png)</a>
 
 <a name="vizualization"><h2>Visualization of results using GradCAM</h2></a>
 
 The [GradCAM](https://arxiv.org/pdf/1610.02391.pdf) visualization algorithm was applied to the classes for which the EfficientNet-B0 architecture showed the best result in the [figure](#grad_cam_img) (visualization of the EfficientNet-B0 neural network: a) for the covid class, b) for the lung opacity class)
 
-<a name="grad_cam_img">![Visualization](https://github.com/businsweetie/diplom/blob/main/pic/GradCam.jpg)</a>
+<a name="grad_cam_img">![Visualization](https://github.com/businsweetie/data_science_projects/blob/main/detection-of-coronavirus-infection-by-X-rays/pic/GradCam.jpg)</a>
 
 <a name="сonclusion"><h2>Conclusion</h2></a>
 
