@@ -24,7 +24,7 @@ The data set contains information about 205296 clients and 17 attributes, 5 quan
 ## Content
 [Primary data analysis](#primary_data_analysis)   
 [Identification of dependencies between features](#dependencies)    
-[]()  
+[Feature selection in the first way](#feature_selection_first)  
 []()  
 []()  
 []()  
@@ -39,4 +39,29 @@ For the **"number of rejected applications"** attribute, an information content 
 Based on the initial analysis, outliers were detected in some features (measurements that stand out from the general sample), which were subsequently removed.
 
 <a name="dependencies"><h2>Identification of dependencies between features</h2></a>
-To better determine which features affect the probability of a client's default, it is necessary to consider the relationship between the target feature and the other features. Based on the graphical representation of dependencies, the features that have a greater impact on the value of the target feature were identified
+To better determine which features affect the probability of a client's default, it is necessary to consider the relationship between the target feature and the other features. Based on the graphical representation of dependencies, [the features that have a greater impact on the value of the target feature were identified](#dependencies_between_features_img).
+
+<a name="dependencies_between_features_img">![DependenciesBetweenFeatures](https://github.com/businsweetie/data_science_projects/blob/main/credit_scoring/pic/dependencies_between_features.png)</a>
+
+After the initial data analysis, it is necessary to carry out the selection of features, because not all features are needed for training algorithms, but only those that have a greater impact on the final result.
+
+The following methods will be used to select features:
+- [WoE (Weight of Evidence)](https://machinelearningmastery.ru/attribute-relevance-analysis-in-python-iv-and-woe-b5651443fc04/) with subsequent assessment of the predictive power of the selected factors using the IV (information value) algorithm;
+- Evaluation of the importance of features using a random forest algorithm.
+
+Before you start working on the selection of features in the first way, you need to convert all quantitative continuous features into categorical ones using quantization (binning). Quantization is a data processing process that allows you to split the range of a quantitative attribute into a given number of intervals (bins) and assign a name to each bin. There are two types of quantization:
+- **Interval**. The range of values is divided into the same intervals, each will not have too much or too little data.
+- **Quantile**. The width of the intervals will be different, but each will contain approximately the same number of values.
+
+In this paper, the second type of quantization is used. Using quantization, the following attributes will be transformed: the age of the client, the scoring score and the client's income.
+
+<a name="feature_selection_first"><h2>Feature selection in the first way</h2></a>
+
+The WoE coefficient relative to this task characterizes the degree of deviation of the default level in this group from the average value in the sample.
+
+To calculate WoE, for each categorical attribute and for each group within the attribute, calculate the number of customers with default ("bad" customers) and without default ("good" customers) and calculate the coefficient using the following formula:
+$$WoE_i=\ln\left({\frac{p_i}{q_i}}\right),$$
+where $i$ - the group number inside the attribute, $p$ - the share of "good" customers among all "good", $q$ - the share of "bad" customers among all "bad".
+
+After calculating the Roe, the information value (coefficient IV) is calculated, which characterizes the statistical significance of the trait, according to the following formula:
+$$IV=\displaystyle\sum_{i=1}^n (p_i-q_i)\ast WoE_i.$$
