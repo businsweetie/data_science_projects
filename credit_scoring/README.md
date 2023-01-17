@@ -120,3 +120,4 @@ The essence of the method: the model is trained on the initial set of features, 
 Thus, the final data set consists of 10 features selected in the second way: Education: High school; Living space: studio; Score: $[-2.116; -1.865]$; Score: $[-1.865; -1.566]$; Score: $> -1.566$; Communication with customers: more than 3; Availability of a car; Bank customer: more than 3; Region: St. Petersburg; Region: Moscow Time.
 
 <a name="сonclusion"><h2>Conclusion</h2></a>
+After reviewing the methods for selecting features, it was found that both methods select approximately the same features.
