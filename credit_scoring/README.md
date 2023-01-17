@@ -63,5 +63,26 @@ To calculate WoE, for each categorical attribute and for each group within the a
 $$WoE_i=\ln\left({\frac{p_i}{q_i}}\right),$$
 where $i$ - the group number inside the attribute, $p$ - the share of "good" customers among all "good", $q$ - the share of "bad" customers among all "bad".
 
-After calculating the Roe, the information value (coefficient IV) is calculated, which characterizes the statistical significance of the trait, according to the following formula:
+After calculating the WoE, the information value (coefficient IV) is calculated, which characterizes the statistical significance of the trait, according to the following formula:
 $$IV=\displaystyle\sum_{i=1}^n (p_i-q_i)\ast WoE_i.$$
+
+To determine the predictive power of a trait based on the calculation of IV, we use the following classification:
+- $<0.02$ - absent,
+- $0.02-0.1$ - low,
+- $0.1-0.3$ - average,
+- $>0.3$ - high.
+
+For the features that were selected as the most significant, the [table](#IV_feat_table) with the values of the coefficient IV is presented below.
+<a name="IV_feat_table"></a>
+Feature                                            | Value of IV
+:-------------------------------------------------:|:----------:
+Number of connections with other clients           | $0.13$
+Scoring score                                      | $0.27$
+Type of living space                               | $0.11$
+Type of position held                              | $0.10$
+The number of years that the applicant is a client | $0.10$
+
+After feature selection, dummy features are created using **dummy coding**. Let one of the features $x_j$ take $m$ values $\{b_1,\dots b_m\}$, then for each object $x^j$, you can replace the feature $x_i^j$ with $m-1$ features with values $\{0,1\}$:
+$$Z_i^{b_k}=I\left[x_i^j=b_k\right] \text{, } k\in \{1,\dots, m-1\},$$
+where $I\left[A\right]$ is the event indicator $A$.
+
