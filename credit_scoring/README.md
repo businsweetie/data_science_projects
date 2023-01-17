@@ -27,8 +27,8 @@ The data set contains information about 205296 clients and 17 attributes, 5 quan
 [Feature selection in the first way](#feature_selection_first)  
 [Selection of features in the second way](#feature_selection_second)  
 [Conclusion](#сonclusion)  
-[]()  
-[]()  
+[Preparing data for model training](#preparing_data_for_train)  
+[Metrics for evaluating the quality of the model](#metrics)  
 []()  
 
 <a name="primary_data_analysis"><h2>Primary data analysis</h2></a>
@@ -118,6 +118,50 @@ Scoring: $[-1.865; -1.566]$ | $182.1$              | $0.035148$
 The essence of the method: the model is trained on the initial set of features, evaluates their significance and excludes the least important feature, the process is repeated until the optimal or specified number of features is obtained, each feature is assigned a rank, the higher the rank, the more important the feature.
 
 Thus, the final data set consists of 10 features selected in the second way: Education: High school; Living space: studio; Score: $[-2.116; -1.865]$; Score: $[-1.865; -1.566]$; Score: $> -1.566$; Communication with customers: more than 3; Availability of a car; Bank customer: more than 3; Region: St. Petersburg; Region: Moscow Time.
+
+<a name="preparing_data_for_train"><h2>Preparing data for model training</h2></a>
+
+To build models, you first need to [divide the sample](#sample_table) into a training sample, on which the model will be trained, and a test sample, on which we will check the quality of models, with respect to 80/20.
+
+<a name="sample_table"></a>
+Sample type | Number of "good" Customers | Number of "bad" Customers | Proportion of "bad" сustomers
+:----------:|:--------------------------:|:-------------------------:|:----------------------------:
+Source      | 144631                     | 18748                      | 11.48\%
+Train       | 115652                     | 15051                      | 11.52\%       
+Test        | 28979                      | 3697                       | 11.31\%
+
+<a name="metrics"><h2>Metrics for evaluating the quality of the model</h2></a>
+
+The operation of the model can be characterized using such quality criteria as: errors of the first and second kind, $accuracy$, $recall$, $precision$, $F_1-score$, $AUC$ $ROC$, $AUC$ $PR$, Gini index. Before considering metrics, we introduce an important concept of the [error matrix](#error_matrix_img).
+
+<a name="error_matrix_img">![ErrorMatrix](https://github.com/businsweetie/data_science_projects/blob/main/credit_scoring/pic/error_matrix.png)</a>
+
+The $accuracy$ metric is common to all classes and is not applicable in problems with an unbalanced sample, as in the problem under consideration
+
+$$accuracy=\frac{TP+TN}{TP+FP+FN+TN}.$$
+
+To correctly assess the quality of algorithms, you need to use the metrics $recall$, $precision$:
+
+$$precision=\frac{TP}{TP+FP},\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ recall=\frac{TP}{TP+FN}.$$
+
+$Recall$, shows what proportion of objects of a positive class the model predicted from all objects of a positive class. $Precision$ shows which proportion of objects that the model predicted as positive is really positive.
+
+Also, when training the model, there are errors of the I-th and II-th kind $False\,Positive$ and $False\,Negative$. In the problem under consideration, an error of the I-th kind can be interpreted as a commercial risk associated with refusal to creditworthy customers. The type II error characterizes the credit risk associated with the number of non-creditworthy customers classified as creditworthy.
+If $recall$ and $precision$ are equally significant for the problem, $F_1$ is used-a measure (the harmonic mean of two metrics $recall$ and $precision$):
+$$F_1=\frac{2\ast precision\ast recall}{precision+recall}.$$
+
+ROC curve is a graph showing the relationship between correctly classified objects of positive class $TPR$ and falsely positively classified objects of negative class $FPR$
+$$TPR=\frac{TP}{TP+FN},\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ FP=\frac{FP}{FP+TN}.$$
+
+The metric $ROC$ $AUC$ (Area Under Curve) measures the area under the curve $ROC$ (Fig. 2), the greater the steepness of the $ROC$ curve, the larger the area under it and the better the model works.
+
+Based on the metric $ROC$ $AUC$, you can calculate another metric – the Gini index
+
+$$Gini=2\ast\left(ROC\,AUC-0.5\right),$$
+
+the higher the Gini index, the better the discriminating ability of the model.
+
+$PR$ is a curve – a graph constructed in the coordinates $recall$ and $precision$. The area under the $PR$ curve ($AUC$ $PR$) is better used for problems with an unbalanced sample (Fig. 3).
 
 <a name="сonclusion"><h2>Conclusion</h2></a>
 After reviewing the methods for selecting features, it was found that both methods select approximately the same features.
