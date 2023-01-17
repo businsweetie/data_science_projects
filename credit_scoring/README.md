@@ -25,8 +25,8 @@ The data set contains information about 205296 clients and 17 attributes, 5 quan
 [Primary data analysis](#primary_data_analysis)   
 [Identification of dependencies between features](#dependencies)    
 [Feature selection in the first way](#feature_selection_first)  
-[]()  
-[]()  
+[Selection of features in the second way](#feature_selection_second)  
+[Conclusion](#сonclusion)  
 []()  
 []()  
 []()  
@@ -86,3 +86,37 @@ After feature selection, dummy features are created using **dummy coding**. Let 
 $$Z_i^{b_k}=I\left[x_i^j=b_k\right] \text{, } k\in \{1,\dots, m-1\},$$
 where $I\left[A\right]$ is the event indicator $A$.
 
+The last step in the selection of features by the first method is the removal of strongly correlated features (of the two features, you need to leave those with a higher WoE coefficient value), for this purpose [correlation matrices](#matrix_of_corr_img) were built.
+
+<a name="matrix_of_corr_img">![Matrix of correlations](https://github.com/businsweetie/data_science_projects/blob/main/credit_scoring/pic/matrix_of_corr.png)</a>
+
+Thus, the final data set consists of 10 features selected in the first way: Living space: studio; Living space: house; Current position: chief;
+Scoring: $[-2.387; -2.116]$; Scoring: $[-2.116; -1.865]$; Scoring: $[-1.865; -1.566]$; Scoring: more than $-1.566$; Connections with other clients: 2; Connections with other clients: 3; Connections with other clients: more than 3.
+
+<a name="feature_selection_second"><h2>Selection of features in the second way</h2></a>
+
+The second method evaluates the importance of each feature based on a random forest algorithm. To do this, you need to train the model on a training sample and calculate the out-of-bag error for each object of this sample. The error is averaged for each element over the entire random forest. The values of each attribute are mixed for all objects of the training sample and the error calculations are performed anew to assess the importance of the attribute. The more the accuracy of predictions decreases due to the exclusion or permutation of a feature, the more important this feature is.
+
+$$FI^{(t)}(x_j)=\frac{\sum_{i \in OOB^{(t)}} I\left(y_i=\widehat{y}_i^{(t)}\right)}{|OOB^{(t)}|} - \frac{\sum_{i \in OOB^{(t)}} I\left(y_i=\widehat{y}_{i,\pi_j}^{(t)}\right)}{|OOB^{(t)}|},$$
+
+where $OOB^{(t)}$ - out-of-bag error for the tree $t\in\{1,\dots, N\}$, $N$ - the number of trees in a random forest, $x_j$ - a sign for whose importance is evaluated, $\widehat{y}^{(t)}$ - prediction before deleting or rearranging a feature, $\widehat{y}_{i,\pi_j}^{(t)}$ - prediction after deleting or rearranging a feature.
+
+Next, the importance of the feature is calculated for all trees in a random forest and can be presented in two forms: non-normalized and normalized:
+$$FI(x_j)=\frac{1}{N}\displaystyle\sum_{t=1}^N FI^{(t)}(x_j) \text{,     } z_j = \frac{N\cdot FI(x_j)}{\sigma},$$
+where $\sigma$ is the standard deviation of the differences.
+
+The [table](#import_feat_table) provides calculations of coefficients for the five most important features. For further analysis, 24 signs were selected for which the normalized value is greater than 0.02.
+<a name="import_feat_table"></a>
+Feature                     | Non-Normalized Value | Normalized value
+:--------------------------:|:--------------------:|:---------------:
+Region: Moscow              | $227.8$              | $0.043968$
+Living space: studio        | $207.4$              | $0.040031$
+Gender: male                | $199.0$              | $0.038410$
+Scoring: $>-1.566$          | $189.4$              | $0.036557$
+Scoring: $[-1.865; -1.566]$ | $182.1$              | $0.035148$
+
+The essence of the method: the model is trained on the initial set of features, evaluates their significance and excludes the least important feature, the process is repeated until the optimal or specified number of features is obtained, each feature is assigned a rank, the higher the rank, the more important the feature.
+
+Thus, the final data set consists of 10 features selected in the second way: Education: High school; Living space: studio; Score: $[-2.116; -1.865]$; Score: $[-1.865; -1.566]$; Score: $> -1.566$; Communication with customers: more than 3; Availability of a car; Bank customer: more than 3; Region: St. Petersburg; Region: Moscow Time.
+
+<a name="сonclusion"><h2>Conclusion</h2></a>
