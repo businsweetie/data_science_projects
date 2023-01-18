@@ -29,7 +29,7 @@ The data set contains information about 205296 clients and 17 attributes, 5 quan
 [Conclusion](#сonclusion)  
 [Preparing data for model training](#preparing_data_for_train)  
 [Metrics for evaluating the quality of the model](#metrics)  
-[]()  
+[Training models](#train)  
 
 <a name="primary_data_analysis"><h2>Primary data analysis</h2></a>
 After the initial data analysis, the date of application was removed, duplicates were removed. Omissions were found in the attribute containing information about the level of education and their replacement was made with the most frequently repeated value.
@@ -153,7 +153,9 @@ $$F_1=\frac{2\ast precision\ast recall}{precision+recall}.$$
 ROC curve is a graph showing the relationship between correctly classified objects of positive class $TPR$ and falsely positively classified objects of negative class $FPR$
 $$TPR=\frac{TP}{TP+FN},\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ FP=\frac{FP}{FP+TN}.$$
 
-The metric $ROC$ $AUC$ (Area Under Curve) measures the area under the curve $ROC$ (Fig. 2), the greater the steepness of the $ROC$ curve, the larger the area under it and the better the model works.
+The metric $ROC$ $AUC$ (Area Under Curve) measures the area under the [curve](#roc_curve_img) $ROC$, the greater the steepness of the $ROC$ curve, the larger the area under it and the better the model works.
+
+<a name="roc_curve_img">![ROCAUC](https://github.com/businsweetie/data_science_projects/blob/main/credit_scoring/pic/ROC%20AUC.png)</a>
 
 Based on the metric $ROC$ $AUC$, you can calculate another metric – the Gini index
 
@@ -161,7 +163,78 @@ $$Gini=2\ast\left(ROC\,AUC-0.5\right),$$
 
 the higher the Gini index, the better the discriminating ability of the model.
 
-$PR$ is a curve – a graph constructed in the coordinates $recall$ and $precision$. The area under the $PR$ curve ($AUC$ $PR$) is better used for problems with an unbalanced sample (Fig. 3).
+$PR$ is a curve – a graph constructed in the coordinates $recall$ and $precision$. The area under the $PR$ [curve](#pr_curve_img) is better used for problems with an unbalanced sample.
+
+<a name="pr_curve_img">![ROCPR](https://github.com/businsweetie/data_science_projects/blob/main/credit_scoring/pic/AUC%20PR.png)</a>
+
+<a name="train"><h2>Training models</h2></a>
+
+Let's build basic models for all algorithms. For the convenience of designations, we number the models. Model 1 - Logistic regression, Model 2 - Nearest Neighbor method, Model 3 - Random Forest, Model 4 - Support Vector Machine. The models were implemented using Python libraries (LogisticRegression, KNeighborsClassifier, RandomForestClassifier, SVC). The results of the work of the basic models show that the models do not differ much from each other in their predictive ability, therefore, for each model it is necessary to [select parameters]() that will improve them. Also, the balancing method was applied for models 1, 3 and 4. The regularization coefficient of the logistic regression turned out to be too large, the model could have been retrained, so it needs to be checked using cross-validation on 10 folds. After cross-validation, it turned out that the strong regularization coefficient had almost no effect on the predictive ability of the model, the values of the metrics changed quite a bit.
+
+<a name="hyp_param_table"></a>
+<table>
+    <thead>
+        <tr>
+            <th>Model</th>
+            <th>Hyperparameter</th>
+            <th>Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Model 1</td>
+            <td>Regularization Coefficient</td>
+            <td>$0.0064281$</td>
+        </tr>
+        <tr>
+            <td>Model 2</td>
+            <td>Number of Neighbors</td>
+            <td>$267$</td>
+        </tr>
+        <tr>
+            <td rowspan=4>Model 3</td>
+            <td>Number of Trees</td>
+            <td>$3 \times 10^{-5}$</td>
+        </tr>
+        <tr>
+            <td>Number of features</td>
+            <td>$log2$</td>
+        </tr>
+        <tr>
+            <td>Tree depth</td>
+            <td>$1200$</td>
+        </tr>
+        <tr>
+            <td>Number of objects in leaves</td>
+            <td>$4$</td>
+        </tr>
+      <tr>
+            <td rowspan=3>Model 4</td>
+            <td>Regularization Coefficient</td>
+            <td>$1$</td>
+        </tr>
+        <tr>
+            <td>Gamma</td>
+            <td>$1$</td>
+        </tr>
+        <tr>
+            <td>Kernel type</td>
+            <td>$Gaussian$</td>
+        </tr>
+    </tbody>
+</table>
+
+The selected hyperparameters and the application of the balancing method to some algorithms significantly improved the [predictive ability](#metric_after_hyp_table_img) of the models.
+
+<a name="metric_after_hyp_table_img"></a>
+Metric      | Model 1  | Model 2  | Model 3  | Model 4
+:----------:|:--------:|:--------:|:--------:|:--------:
+precision   | 0.168052 | 0.125000 | 0.174900 | 0.174773
+recall      | 0.667027 | 0.000541 | 0.602380 | 0.602651     
+$F_1-score$ | 0.268467 | 0.001077 | 0.271089 | 0.270964
+AUC PR      | 0.149768 | 0.113148 | 0.150343 | -
+
+<a>![ErrorMetrixAfterHypPar](https://github.com/businsweetie/data_science_projects/blob/main/credit_scoring/pic/error_matrix_after_hyp.png)</a>
 
 <a name="сonclusion"><h2>Conclusion</h2></a>
 After reviewing the methods for selecting features, it was found that both methods select approximately the same features.
