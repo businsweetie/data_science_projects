@@ -30,6 +30,7 @@ The data set contains information about 205296 clients and 17 attributes, 5 quan
 [Preparing data for model training](#preparing_data_for_train)  
 [Metrics for evaluating the quality of the model](#metrics)  
 [Training models](#train)  
+[Undersampling method](#undersampling)
 
 <a name="primary_data_analysis"><h2>Primary data analysis</h2></a>
 After the initial data analysis, the date of application was removed, duplicates were removed. Omissions were found in the attribute containing information about the level of education and their replacement was made with the most frequently repeated value.
@@ -227,14 +228,36 @@ Let's build basic models for all algorithms. For the convenience of designations
 The selected hyperparameters and the application of the balancing method to some algorithms significantly improved the [predictive ability](#metric_after_hyp_table_img) of the models.
 
 <a name="metric_after_hyp_table_img"></a>
-Metric      | Model 1  | Model 2  | Model 3  | Model 4
-:----------:|:--------:|:--------:|:--------:|:--------:
-precision   | 0.168052 | 0.125000 | 0.174900 | 0.174773
-recall      | 0.667027 | 0.000541 | 0.602380 | 0.602651     
-$F_1-score$ | 0.268467 | 0.001077 | 0.271089 | 0.270964
-AUC PR      | 0.149768 | 0.113148 | 0.150343 | -
+Metric      | Model 1    | Model 2    | Model 3    | Model 4
+:----------:|:----------:|:----------:|:----------:|:--------:
+precision   | $0.168052$ | $0.125000$ | $0.174900$ | $0.174773$
+recall      | $0.667027$ | $0.000541$ | $0.602380$ | $0.602651$     
+$F_1-score$ | $0.268467$ | $0.001077$ | $0.271089$ | $0.270964$
+AUC PR      | $0.149768$ | $0.113148$ | $0.150343$ | -
 
 <a>![ErrorMetrixAfterHypPar](https://github.com/businsweetie/data_science_projects/blob/main/credit_scoring/pic/error_matrix_after_hyp.png)</a>
 
+<a name="undersampling"><h2>Undersampling method</h2></a>
+
+Our sample is unbalanced: the number of "good" customers is 144631, the number of "bad" customers is 18748. Undersampling is a process in which a certain number of records are randomly removed from the majority class in order to match the number with the records of a smaller class.
+After applying the method: the number of "good" customers is 18748, the number of "bad" customers is 18748.
+[Below](#error_matrix_after_undersampling_img) are the error matrices for the models after applying the undersampling method on the first set of selected features and metrics for this models.
+
+<a name="metric_after_undersampling_table_img"></a>
+Metric      | Model 1    | Model 2    | Model 3    | Model 4
+:----------:|:----------:|:----------:|:----------:|:--------:
+precision   | $0.609229$ | $0.610981$ | $0.606604$ | $0.606906$
+recall      | $0.666488$ | $0.561762$ | $0.690655$ | $0.689044$     
+$F_1-score$ | $0.636573$ | $0.585339$ | $0.645907$ | $0.645372$
+AUC PR      | $0.340000$ | $0.260000$ | $0.340000$ | -
+
+<a>![ErrorMetrixAfterUndersampling](https://github.com/businsweetie/data_science_projects/blob/main/credit_scoring/pic/error_matrix_after_undersampling.png)</a>
+
+Obviously, models on balanced data work much better, showing better metric values.
+
 <a name="сonclusion"><h2>Conclusion</h2></a>
-After reviewing the methods for selecting features, it was found that both methods select approximately the same features.
+The application of a particular model depends on the specific task. In forecasting problems, nonlinear models such as random forest and the support vector machine show the best results. The algorithms considered in the paper have shown good predictive ability for use in forecasting the solvency of bank customers. In our work on the F1 metric, the random forest model showed itself best.
+
+The other models also showed excellent results on both unbalanced and balanced data. Despite the advantages of the nearest neighbor method (simple implementation, good interpretation, hyperparameter tuning), it did not show very good results on the data compared to other methods, probably due to the problem of data imbalance. But on the data that was modified using the undersampling method and this model showed good results.
+
+If we compare the methods of feature selection, then the first method, based on the calculation of the WoE and IV coefficients, is more informative and interpretable than the second (estimating the importance of each feature based on the random forest algorithm). There are no strong differences in the construction of models based on the features selected by the first and second methods, therefore, the further application of these methods may depend on the task at hand.
