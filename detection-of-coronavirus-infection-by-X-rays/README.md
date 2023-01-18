@@ -24,14 +24,16 @@ All images have been transformed to an extension $224 \times 224$ the pixel wher
 The data set under study was [divided](#sample_table) into training, test, and validation samples.
 
 <a name="sample_table"></a>
-Sample type | Covid | Pneumonia | Lung opacity | Normal | Total images
-:----------:|:-----:|:---------:|:------------:|:------:|:-----------:
-Source      | 3615  | 1345      | 3716         | 10192  | 18868 
-Train       | 3315  | 1045      | 3416         | 9892   | 17668
-Valid       | 150   | 150       | 150          | 150    | 600
-Test        | 150   | 150       | 150          | 150    | 600
+<div align="center">
+    
+Sample type | Covid | Pneumonia | Lung opacity | Normal | Total images |
+:----------:|:-----:|:---------:|:------------:|:------:|:------------:|
+Source      | 3615  | 1345      | 3716         | 10192  | 18868        |
+Train       | 3315  | 1045      | 3416         | 9892   | 17668        |
+Valid       | 150   | 150       | 150          | 150    | 600          |
+Test        | 150   | 150       | 150          | 150    | 600          |
 
-
+</div>
 <a name="balancing"><h2>Data Balancing</h2></a>
 The data set under consideration is [unbalanced](#balancing_img), so the WeightedRandomSampler method was used for correct training.
 
@@ -43,13 +45,16 @@ To use this method, you need to:
 - assign a [corresponding weight factor](#weight_table) to each image in the class.
 
 <a name="weight_table"></a>
-Class name   | Number of images in the class | Class weighting factor
-:-----------:|:-----------------------------:|:----------------------:
-Covid        | $3315$                          | $0.0003$
-Pneumonia    | $1045$                          | $0.0010$
-Lung opacity | $3416$                          | $0.0003$
-Normal       | $9892$                          | $0.0001$
+<div align="center">
+    
+Class name   | Number of images in the class | Class weighting factor |
+:-----------:|:-----------------------------:|:----------------------:|
+Covid        | $3315$                          | $0.0003$             |
+Pneumonia    | $1045$                          | $0.0010$             |
+Lung opacity | $3416$                          | $0.0003$             |
+Normal       | $9892$                          | $0.0001$             |
 
+</div>
 Using this approach will allow you to use approximately the same number of images of each class in each batch. This may mean using the same image several times.
 
 <a name="hyperparameters"><h2>Selection of hyperparameters</h2></a>
@@ -72,68 +77,70 @@ The initial learning rate intervals were chosen to be the same for all architect
 <a name="initial_intervals_img">![initial interval](https://github.com/businsweetie/data_science_projects/blob/main/detection-of-coronavirus-infection-by-X-rays/pic/AllScheduler.jpg)</a>
 
 <a name="optimal_intervals_table"></a>
-<table>
-    <thead>
-        <tr>
-            <th>Architecture</th>
-            <th>Type of learning rate</th>
-            <th>Learning rate value</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td rowspan=4>ResNet-18</td>
-            <td>permanent</td>
-            <td>$1 \times 10^{-6}$</td>
-        </tr>
-        <tr>
-            <td>permanent</td>
-            <td>$3 \times 10^{-4}$</td>
-        </tr>
-        <tr>
-            <td><em>permanent</em></td>
-            <td>$3 \times 10^{-5}$</td>
-        </tr>
-        <tr>
-            <td><em><strong>cyclical</strong></em></td>
-            <td>$[5 \times 10^{-6}; 3 \times 10^{-5}]$</td>
-        </tr>
-      <tr>
-            <td rowspan=4>DenseNet-121</td>
-            <td><em>permanent</em></td>
-            <td>$1 \times 10^{-6}$</td>
-        </tr>
-        <tr>
-            <td><em><strong>permanent</strong></em></td>
-            <td>$9.5 \times 10^{-5}$</td>
-        </tr>
-        <tr>
-            <td>permanent</td>
-            <td>$9.5 \times 10^{-6}$</td>
-        </tr>
-        <tr>
-            <td>cyclical</td>
-            <td>$[1.5 \times 10^{-6};9.5 \times 10^{-5}]$</td>
-        </tr>
-      <tr>
-            <td rowspan=4>EfficientNet-B0</td>
-            <td>permanent</td>
-            <td>$1 \times 10^{-5}$</td>
-        </tr>
-        <tr>
-            <td><em><strong>permanent</strong></em></td>
-            <td>$9 \times 10^{-4}$</td>
-        </tr>
-        <tr>
-            <td><em>permanent</em></td>
-            <td>$9 \times 10^{-5}$</td>
-        </tr>
-        <tr>
-            <td>cyclical</td>
-            <td>$[1.5 \times 10^{-5};9 \times 10^{-5}]$</td>
-        </tr>
-    </tbody>
-</table>
+<div align="center">
+    <table>
+        <thead>
+            <tr>
+                <th>Architecture</th>
+                <th>Type of learning rate</th>
+                <th>Learning rate value</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td rowspan=4>ResNet-18</td>
+                <td>permanent</td>
+                <td>$1 \times 10^{-6}$</td>
+            </tr>
+            <tr>
+                <td>permanent</td>
+                <td>$3 \times 10^{-4}$</td>
+            </tr>
+            <tr>
+                <td><em>permanent</em></td>
+                <td>$3 \times 10^{-5}$</td>
+            </tr>
+            <tr>
+                <td><em><strong>cyclical</strong></em></td>
+                <td>$[5 \times 10^{-6}; 3 \times 10^{-5}]$</td>
+            </tr>
+          <tr>
+                <td rowspan=4>DenseNet-121</td>
+                <td><em>permanent</em></td>
+                <td>$1 \times 10^{-6}$</td>
+            </tr>
+            <tr>
+                <td><em><strong>permanent</strong></em></td>
+                <td>$9.5 \times 10^{-5}$</td>
+            </tr>
+            <tr>
+                <td>permanent</td>
+                <td>$9.5 \times 10^{-6}$</td>
+            </tr>
+            <tr>
+                <td>cyclical</td>
+                <td>$[1.5 \times 10^{-6};9.5 \times 10^{-5}]$</td>
+            </tr>
+          <tr>
+                <td rowspan=4>EfficientNet-B0</td>
+                <td>permanent</td>
+                <td>$1 \times 10^{-5}$</td>
+            </tr>
+            <tr>
+                <td><em><strong>permanent</strong></em></td>
+                <td>$9 \times 10^{-4}$</td>
+            </tr>
+            <tr>
+                <td><em>permanent</em></td>
+                <td>$9 \times 10^{-5}$</td>
+            </tr>
+            <tr>
+                <td>cyclical</td>
+                <td>$[1.5 \times 10^{-5};9 \times 10^{-5}]$</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 
 <a name="training"><h2>Model training</h2></a>
 
@@ -150,14 +157,16 @@ The performance of different convolutional neural network models was evaluated u
 Metric values for each class were calculated for each of the models. The [table](#best_metrics_table) shows models for each class that show the best accuracy metric. Models that showed the best predictive power are highlighted in black in the [table](#optimal_intervals_table).
 
 <a name="best_metrics_table"></a>
+<div align="center">
+    
+Class name   | Architecture    | Model               | Accuracy   |
+------------:|:---------------:|:-------------------:|:----------:|
+Covid        | EfficientNet-B0 | $9\times 10^{-4}$   | $1.000000$ |
+Pneumonia    | DenseNet-121    | $9.5\times 10^{-5}$ | $0.996540$ |
+Lung opacity | EfficientNet-B0 | $9\times 10^{-4}$   | $0.968067$ |
+Normal       | DenseNet-121    | $9.5\times 10^{-5}$ | $0.961603$ |
 
-Class name   | Architecture    | Model               | Accuracy
-------------:|:---------------:|:-------------------:|:--------
-Covid        | EfficientNet-B0 | $9\times 10^{-4}$   | $1.000000$
-Pneumonia    | DenseNet-121    | $9.5\times 10^{-5}$ | $0.996540$
-Lung opacity | EfficientNet-B0 | $9\times 10^{-4}$   | $0.968067$
-Normal       | DenseNet-121    | $9.5\times 10^{-5}$ | $0.961603$
-
+</div>
 For the models that showed the best predictive ability, a [graph of the correctness value](#acc_comp_img) was constructed.
 
 <a name="acc_comp_img">![Comparison of models](https://github.com/businsweetie/data_science_projects/blob/main/detection-of-coronavirus-infection-by-X-rays/pic/AccCompCovid.png)</a>
